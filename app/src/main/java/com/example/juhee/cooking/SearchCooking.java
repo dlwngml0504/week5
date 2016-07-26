@@ -1,10 +1,12 @@
 package com.example.juhee.cooking;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -23,6 +25,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +36,8 @@ public class SearchCooking extends AppCompatActivity {
     private TextReader mTextReader;
     private List<String> mLines;
     private List<String> Menu_List = new ArrayList<>();
+    private static String GET_URL = "http://143.248.47.69:10900/food?title=";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +55,16 @@ public class SearchCooking extends AppCompatActivity {
 
         final AutoCompleteTextView cooking = (AutoCompleteTextView) findViewById(R.id.searchFood);
         cooking.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, Menu_List));
+
+        Button btn = (Button)findViewById(R.id.searchBtn);
+        btn.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Log.e("SearchCooking","btnClick");
+                SearchMenu searchmenu = new SearchMenu(getApplicationContext());
+                searchmenu.execute(cooking.getText().toString());
+            }
+        });
+
 
         Button YOUTUBE = (Button)findViewById(R.id.search_by_youtube);
         YOUTUBE.setOnClickListener(new Button.OnClickListener() {
@@ -140,4 +156,54 @@ public class SearchCooking extends AppCompatActivity {
         return sb.toString();
 
     }
+
+    private static class SearchMenu extends AsyncTask<String,Void,String>{
+        Context mContext;
+        String respond;
+        static String mMenu;
+        public SearchMenu (Context context) {
+            mContext = context;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+        try {
+            mMenu = params[0];
+            respond = sendGET();
+            Log.e("respond",respond);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+            return respond;
+        }
+
+        private static String sendGET() throws IOException {
+            String mURL = GET_URL+ URLEncoder.encode(mMenu, "UTF-8");
+            Log.e("setnGet",mURL);
+            URL obj = new URL(mURL);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("GET");
+
+            int responseCode = con.getResponseCode();
+            Log.e("UserLogin","GET Response Code :: " + responseCode);
+            if (responseCode == HttpURLConnection.HTTP_OK) { // success
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                Log.e("SearchCooking",response.toString());
+                return response.toString();
+            } else {
+                Log.e("SearchCooking","GET request not worked");
+            }
+            return "";
+        }
+    }
+
 }

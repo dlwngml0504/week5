@@ -25,7 +25,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".YoutubeActivity" />
         <activity android:name=".SearchCooking" />
-        <activity android:name=".ExtraYoutubePlay"></activity>
+        <activity android:name=".ExtraYoutubePlay" />
+        <activity android:name=".CookWithRefirgerator"></activity>
     </application>
 
 </manifest>

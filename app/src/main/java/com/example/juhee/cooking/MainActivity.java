@@ -14,10 +14,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+        final String userID = intent.getStringExtra("userid");
         Button btn1 = (Button)findViewById(R.id.btn1);
         btn1.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"Tab1",Toast.LENGTH_LONG).show();
+                Intent intent1 = new Intent(MainActivity.this,CookWithRefirgerator.class);
+                intent1.putExtra("userid",userID);
+                startActivity(intent1);
             }
         });
 
@@ -25,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         btn2.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent intent2 = new Intent(MainActivity.this,SearchCooking.class);
+                intent2.putExtra("userid",userID);
                 startActivity(intent2);
             }
         });
@@ -32,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         btn3.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent intent3 = new Intent(MainActivity.this,MyRefrigeration.class);
+                intent3.putExtra("userid",userID);
                 startActivity(intent3);
             }
         });

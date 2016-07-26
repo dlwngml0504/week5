@@ -19,6 +19,9 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class LoginActivity extends AppCompatActivity {
     CallbackManager callbackManager;
@@ -46,10 +49,18 @@ public class LoginActivity extends AppCompatActivity {
                         HttpMethod.GET,
                         new GraphRequest.Callback() {
                             public void onCompleted(GraphResponse response) {
-                                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+
+                                UserLogin login = new UserLogin(getApplicationContext());
+                                JSONObject user = response.getJSONObject();
+                                try {
+                                    login.execute(user.getString("id"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                /*Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                                 //Log.e("LoginSuccess", String.valueOf(response.getJSONObject()));
                                 intent.putExtra("userinfo",response.getJSONObject().toString());
-                                startActivity(intent);
+                                startActivity(intent);*/
                             }
                         }
                 ).executeAsync();
