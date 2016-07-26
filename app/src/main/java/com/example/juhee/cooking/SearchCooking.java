@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.os.StrictMode;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -157,10 +158,10 @@ public class SearchCooking extends AppCompatActivity {
 
     }
 
-    private static class SearchMenu extends AsyncTask<String,Void,String>{
+    private class SearchMenu extends AsyncTask<String,Void,String>{
         Context mContext;
-        String respond;
-        static String mMenu;
+        String mMenu;
+        String MenuResult;
         public SearchMenu (Context context) {
             mContext = context;
         }
@@ -168,17 +169,36 @@ public class SearchCooking extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-        try {
-            mMenu = params[0];
-            respond = sendGET();
-            Log.e("respond",respond);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-            return respond;
+            try {
+                mMenu = params[0];
+                MenuResult = sendGET();
+                Log.e("respond", MenuResult);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return MenuResult;
         }
 
-        private static String sendGET() throws IOException {
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.e("onPostExecute",result);
+            TextView main = (TextView)findViewById(R.id.main_ingredients);
+            TextView sub = (TextView)findViewById(R.id.sub_ingredients);
+            TextView recipe = (TextView)findViewById(R.id.recipe);
+            try {
+                JSONObject Result_jo = new JSONObject(result);
+                JSONArray ja= Result_jo.getJSONArray("results");
+                JSONObject jo = ja.getJSONObject(0);
+                recipe.setText(jo.getString("recipe" +
+                        ""));
+                main.setText(jo.getString("main_ingredients"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private String sendGET() throws IOException {
             String mURL = GET_URL+ URLEncoder.encode(mMenu, "UTF-8");
             Log.e("setnGet",mURL);
             URL obj = new URL(mURL);
