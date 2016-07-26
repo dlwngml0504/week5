@@ -14,12 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <EditText
+
+        <AutoCompleteTextView
             android:id="@+id/searchFood"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:hint="요리를 입력하세요"/>
+            android:completionHint="요리를 입력하세요"
+            android:completionThreshold="1"/>
 
         <Button
             android:layout_width="match_parent"

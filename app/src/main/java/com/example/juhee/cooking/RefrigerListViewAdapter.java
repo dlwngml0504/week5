@@ -1,9 +1,17 @@
 package com.example.juhee.cooking;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -12,21 +20,21 @@ import java.util.ArrayList;
  */
 public class RefrigerListViewAdapter extends BaseAdapter{
     private Context mContext = null;
-    private ArrayList<String> mListData = new ArrayList<String>();
+    private ArrayList<String> m_List;
 
     public RefrigerListViewAdapter(Context mContext) {
-        super();
+        m_List = new ArrayList<String>();
         this.mContext = mContext;
     }
 
     @Override
     public int getCount() {
-        return mListData.size();
+        return m_List.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mListData.get(position);
+        return m_List.get(position);
     }
 
     @Override
@@ -36,6 +44,29 @@ public class RefrigerListViewAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position,View convertView, ViewGroup parent) {
-        return null;
+        final int pos = position;
+        final Context context = parent.getContext();
+
+
+        if ( convertView == null ) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.refrigerator_listview, parent, false);
+
+            final String iteminfo =  m_List.get(position);
+
+            Button playBtn = (Button) convertView.findViewById(R.id.playbtn);
+            playBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+
+
+
+        return convertView;
     }
+
+
 }

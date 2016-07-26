@@ -2,15 +2,13 @@ package com.example.juhee.cooking;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.os.StrictMode;
 
 import org.json.JSONArray;
@@ -25,20 +23,33 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchCooking extends AppCompatActivity {
     String Query_URL = "https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&key=AIzaSyDXgwnlZ35SmzwN1NA2GZsPKl3NUkEGeX0&q=";
-
+    public static final String mPath = "menu.txt";
+    private TextReader mTextReader;
+    private List<String> mLines;
+    private List<String> Menu_List = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_cooking_activity);
+        setContentView(R.layout.searchmenu_activity);
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        final EditText cooking = (EditText)findViewById(R.id.searchFood);
+
+        mTextReader = new TextReader(this);
+        mLines = mTextReader.readLine(mPath);
+        for (String string : mLines){
+            Menu_List.add(string);
+        }
+
+        final AutoCompleteTextView cooking = (AutoCompleteTextView) findViewById(R.id.searchFood);
+        cooking.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, Menu_List));
+
         Button YOUTUBE = (Button)findViewById(R.id.search_by_youtube);
         YOUTUBE.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {

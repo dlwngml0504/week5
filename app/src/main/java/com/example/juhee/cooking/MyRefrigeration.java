@@ -1,35 +1,36 @@
 package com.example.juhee.cooking;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Looper;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Spinner;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyRefrigeration extends AppCompatActivity {
-    String[] items = { "SM3", "SM5", "SM7", "SONATA", "AVANTE", "SOUL", "K5","K7" };
+
+    public static final String mPath = "material.txt";
+    private TextReader mTextReader;
+    private List<String> mLines;
+    private List<String> Menu_List = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_refrigeration_activity);
 
+        mTextReader = new TextReader(this);
+        mLines = mTextReader.readLine(mPath);
+        for (String string : mLines){
+            Menu_List.add(string);
+        }
+
         final AutoCompleteTextView edit = (AutoCompleteTextView) findViewById(R.id.foodname);
-        edit.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, items));
+        edit.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, Menu_List));
 
         Button add_btn = (Button)findViewById(R.id.add);
         add_btn.setOnClickListener(new Button.OnClickListener() {
