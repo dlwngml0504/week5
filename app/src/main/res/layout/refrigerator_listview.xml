@@ -4,13 +4,14 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/materialname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="food name"
-        android:id="@+id/textView"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"/>
     <Button
+        android:id="@+id/deletebtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="삭제"

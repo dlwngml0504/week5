@@ -31,7 +31,9 @@ public class RefrigerListViewAdapter extends BaseAdapter{
     public int getCount() {
         return m_List.size();
     }
-
+    public void add(String _msg) {
+        m_List.add(_msg);
+    }
     @Override
     public Object getItem(int position) {
         return m_List.get(position);
@@ -43,7 +45,7 @@ public class RefrigerListViewAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position,View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final int pos = position;
         final Context context = parent.getContext();
 
@@ -53,18 +55,20 @@ public class RefrigerListViewAdapter extends BaseAdapter{
             convertView = inflater.inflate(R.layout.refrigerator_listview, parent, false);
 
             final String iteminfo =  m_List.get(position);
+            Log.e("RefrigerAdapter",iteminfo.toString());
 
-            Button playBtn = (Button) convertView.findViewById(R.id.playbtn);
+            TextView material = (TextView)convertView.findViewById(R.id.materialname);
+            material.setText(iteminfo.toString());
+
+            Button playBtn = (Button) convertView.findViewById(R.id.deletebtn);
             playBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    m_List.remove(position);
+                    notifyDataSetChanged();
                 }
             });
         }
-
-
-
         return convertView;
     }
 
