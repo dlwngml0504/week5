@@ -190,8 +190,16 @@ public class SearchCooking extends AppCompatActivity {
                 JSONObject Result_jo = new JSONObject(result);
                 JSONArray ja= Result_jo.getJSONArray("results");
                 JSONObject jo = ja.getJSONObject(0);
-                recipe.setText(jo.getString("recipe" +
-                        ""));
+
+                String[] reciple_List = jo.getString("recipe").split("\",\"");
+                String _recipe = "1. "+reciple_List[0].substring(2) + "\n";
+                for (int i=2;i<reciple_List.length;i++) {
+                    Log.e("onPostExecute", i+reciple_List[i-1]);
+                    _recipe += i + ". "+reciple_List[i-1]+"\n";
+                }
+                Log.e("onPostExecute", reciple_List[reciple_List.length-1]);
+                _recipe += reciple_List.length + ". "+reciple_List[reciple_List.length-1].split("\"]")[0];
+                recipe.setText(_recipe);
                 main.setText(jo.getString("main_ingredients"));
             } catch (JSONException e) {
                 e.printStackTrace();
