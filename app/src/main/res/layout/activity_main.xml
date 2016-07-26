@@ -8,21 +8,34 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.juhee.cooking.MainActivity"
+    android:gravity="center"
+    android:background="#C5C5C1"
     android:orientation="vertical">
     
     <Button
         android:id="@+id/btn1"
         android:layout_width="match_parent"
         android:text="요리 추천"
+        android:textStyle="bold"
+        android:background="#91918E"
+        android:textColor="#FFFFFF"
         android:layout_height="130dp" />
     <Button
         android:id="@+id/btn2"
         android:layout_width="match_parent"
         android:text="요리 검색하기"
+        android:textStyle="bold"
+        android:layout_marginTop="3dp"
+        android:background="#91918E"
+        android:textColor="#FFFFFF"
         android:layout_height="130dp" />
     <Button
         android:id="@+id/btn3"
         android:layout_width="match_parent"
         android:text="냉장고 정리하기"
+        android:textStyle="bold"
+        android:layout_marginTop="3dp"
+        android:background="#91918E"
+        android:textColor="#FFFFFF"
         android:layout_height="130dp"/>
 </LinearLayout>

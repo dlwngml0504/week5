@@ -2,8 +2,10 @@ package com.example.juhee.cooking;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
@@ -12,11 +14,17 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     private static final int RECOVERY_REQUEST = 1;
     private YouTubePlayerView youTubeView;
     String videoid;
+    private PlayAdapter m_Adapter;
+    private ListView m_ListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +33,22 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
         Intent intent = getIntent();
         videoid = intent.getStringExtra("videoId");
         String title = intent.getStringExtra("title");
+        String playList = intent.getStringExtra("playInfo");
+        Log.e("TITLE",title);
+        Log.e("platList",playList);
+        m_Adapter = new PlayAdapter(YoutubeActivity.this);
+        m_ListView = (ListView)findViewById(R.id.youtubeList);
+        m_ListView.setAdapter(m_Adapter);
+        try {
+            JSONArray ja = new JSONArray(playList);
+            for (int i =0; i<5 ;i++) {
+                m_Adapter.add(ja.getJSONObject(i).toString());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
     }

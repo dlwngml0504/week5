@@ -25,9 +25,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class SearchCooking extends AppCompatActivity {
     String Query_URL = "https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&key=AIzaSyDXgwnlZ35SmzwN1NA2GZsPKl3NUkEGeX0&q=";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,15 +42,15 @@ public class SearchCooking extends AppCompatActivity {
         Button YOUTUBE = (Button)findViewById(R.id.search_by_youtube);
         YOUTUBE.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Query_URL += cooking.getText();
-                Query_URL += "%20만들기";
+                String url_String = "https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&key=AIzaSyDXgwnlZ35SmzwN1NA2GZsPKl3NUkEGeX0&q=";
+                url_String += cooking.getText();
+                url_String += "%20만들기";
                 Log.e("SearchCookgin",Query_URL);
-
+                Query_URL = url_String;
                 new ConnectURL().execute(Query_URL);
 
             }
         });
-
     }
 
 
@@ -70,7 +72,7 @@ public class SearchCooking extends AppCompatActivity {
                 Log.e("SearchCooking",in.toString());
                 json = new JSONObject(getStringFromInputStream(in));
                 Log.e("JSON",json.getJSONArray("items").getJSONObject(0).toString());
-                return json.getJSONArray("items").getJSONObject(0);
+                return json.getJSONArray("items");
             }catch(MalformedURLException e){
                 System.err.println("Malformed URL");
                 e.printStackTrace();
@@ -88,10 +90,11 @@ public class SearchCooking extends AppCompatActivity {
         protected void onPostExecute(Object result) {
 
             Intent intent = new Intent(SearchCooking.this,YoutubeActivity.class);
-            JSONObject jo = (JSONObject) result;
+            JSONArray ja = (JSONArray) result;
             try {
-                intent.putExtra("videoId",jo.getJSONObject("id").getString("videoId"));
-                intent.putExtra("title",jo.getJSONObject("id").getString("title"));
+                intent.putExtra("videoId",ja.getJSONObject(0).getJSONObject("id").getString("videoId"));
+                intent.putExtra("title",ja.getJSONObject(0).getJSONObject("snippet").getString("title"));
+                intent.putExtra("playInfo",ja.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
