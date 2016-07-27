@@ -41,7 +41,7 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
         m_ListView.setAdapter(m_Adapter);
         try {
             JSONArray ja = new JSONArray(playList);
-            for (int i =0; i<13 ;i++) {
+            for (int i =0; i<5 ;i++) {
                 m_Adapter.add(ja.getJSONObject(i).toString());
             }
         } catch (JSONException e) {
