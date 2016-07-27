@@ -2,6 +2,8 @@ package com.example.juhee.cooking;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.os.StrictMode;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -193,6 +197,7 @@ public class SearchCooking extends AppCompatActivity {
             try {
                 sendGET SENDGET = new sendGET();
                 MenuResult = SENDGET.send(GET_URL, params[0]);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -204,16 +209,45 @@ public class SearchCooking extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Log.e("onPostExecute", result);
+            ImageView _image = (ImageView)findViewById(R.id.foodImage);
+            final Bitmap[] bitmap = new Bitmap[1];
             TextView main = (TextView) findViewById(R.id.main_ingredients);
-            TextView mTitle = (TextView) findViewById(R.id.mMenu);
             TextView recipe = (TextView) findViewById(R.id.recipe);
             try {
                 JSONObject Result_jo = new JSONObject(result);
                 JSONArray ja = Result_jo.getJSONArray("results");
-                JSONObject jo = ja.getJSONObject(0);
+                final JSONObject jo = ja.getJSONObject(0);
 
-                /*요리 이름 등록*/
-                mTitle.setText(jo.getString("title"));
+                /* 사진 업로드*/
+                Thread mThread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            URL url = new URL(jo.getString("img_url"));
+
+                            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                            conn.setDoInput(true);
+                            conn.connect();
+
+                            InputStream is = conn.getInputStream();
+                            bitmap[0] = BitmapFactory.decodeStream(is);
+
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                mThread.start();
+                try {
+                    mThread.join();
+                    _image.setImageBitmap(bitmap[0]);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 /* 재료 파싱 */
                 String[] mainIng_List = jo.getString("main_ingredients").split("],");
@@ -223,7 +257,7 @@ public class SearchCooking extends AppCompatActivity {
                 Log.e("mainIng_List.length", String.valueOf(mainIng_List.length));
                 if (mainIng_List.length!=1) {
                     String[] lst1 = mainIng_List[0].split("\",\"");
-                    _ingredient += lst1[0].substring(3) + "[" +lst1[1].substring(0,lst1[1].length()-2)+"]";
+                    _ingredient += lst1[0].substring(3) + "[" +lst1[1].substring(0,lst1[1].length()-1)+"]";
                     for (int i=1;i<mainIng_List.length-1;i++) {
                         String str = mainIng_List[i];
                         String[] lst = str.split("\",\"");
@@ -234,28 +268,31 @@ public class SearchCooking extends AppCompatActivity {
 
                 }
                 if (subIng_List.length!=1) {
+                    if (mainIng_List.length!=1) {
+                        _ingredient += ", ";
+                    }
                     String[] lst3 = subIng_List[0].split("\",\"");
-                    _ingredient += ", "+lst3[0].substring(3) + "[" +lst3[1].substring(0,lst3[1].length()-2)+"]";
+                    _ingredient += lst3[0].substring(3) + "[" +lst3[1].substring(0,lst3[1].length()-1)+"]";
                     for (int i=1;i<subIng_List.length-1;i++) {
                         String str = subIng_List[i];
                         String[] lst = str.split("\",\"");
                         _ingredient += ", "+lst[0].substring(2) + "[" +lst[1].substring(0,lst[1].length()-1)+"]";
                     }
                     String[] lst4 = subIng_List[subIng_List.length-1].split("\",\"");
-                    _ingredient += ", "+lst4[0].substring(3) + "[" +lst4[1].substring(0,lst4[1].length()-3)+"]";
+                    _ingredient += ", "+lst4[0].substring(2) + "[" +lst4[1].substring(0,lst4[1].length()-3)+"]";
 
                 }
 
-                main.setText(_ingredient);
+                main.setText("\n  <<재료>>\n"+_ingredient);
 
                 /* 레시피 parsing */
                 String[] reciple_List = jo.getString("recipe").split("\",\"");
                 String _recipe = "1. " + reciple_List[0].substring(2) + "\n";
                 for (int i = 2; i < reciple_List.length; i++) {
-                    _recipe += i + ". " + reciple_List[i - 1] + "\n";
+                    _recipe += "\n"+i + ". " + reciple_List[i - 1] + "\n";
                 }
-                _recipe += reciple_List.length + ". " + reciple_List[reciple_List.length - 1].split("\"]")[0];
-                recipe.setText(_recipe);
+                _recipe +="\n"+ reciple_List.length + ". " + reciple_List[reciple_List.length - 1].split("\"]")[0];
+                recipe.setText("\n  <<조리법>>\n"+_recipe);
 
             } catch (JSONException e) {
                 e.printStackTrace();

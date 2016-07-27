@@ -53,7 +53,6 @@ public class RefrigerListViewAdapter extends BaseAdapter{
         final int pos = position;
         final Context context = parent.getContext();
 
-
         if ( convertView == null ) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.refrigerator_listview, parent, false);
@@ -77,8 +76,12 @@ public class RefrigerListViewAdapter extends BaseAdapter{
                         e.printStackTrace();
                     }
 
+                    Log.e("Delete",iteminfo.toString());
+                    Log.e("position", String.valueOf(position));
+                    Log.e("m_List",m_List.toString());
                     m_List.remove(position);
-                    notifyDataSetChanged();
+                    Log.e("m_List",m_List.toString());
+                    //notifyDataSetChanged();
                 }
             });
         }

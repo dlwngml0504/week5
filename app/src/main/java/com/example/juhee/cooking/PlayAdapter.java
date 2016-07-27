@@ -77,6 +77,8 @@ public class PlayAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Log.e("PlayAdapter",iteminfo);
+                    Log.e("mVideoId",mVideoId);
+                    Log.e("mVideoTitle",mVideoTitle);
                     Intent intent = new Intent(m_Context,ExtraYoutubePlay.class);
                     intent.putExtra("videoId",mVideoId);
                     intent.putExtra("videoTitle",mVideoTitle);

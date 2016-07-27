@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:completionHint="요리를 입력하세요"
-            android:completionThreshold="1"/>
+            android:completionThreshold="1" />
 
         <Button
             android:id="@+id/searchBtn"
@@ -30,52 +30,29 @@
             android:text="검색"/>
     </LinearLayout>
 
+
+    <ImageView
+        android:id="@+id/foodImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <RelativeLayout
+        android:orientation="vertical"
         android:id="@+id/menuBook"
         android:layout_width="match_parent"
-        android:layout_height="410dp">
-        <LinearLayout
-            android:layout_width="match_parent"
+        android:layout_height="310dp">
+        <TextView
+            android:id="@+id/main_ingredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/recipe"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/linearLayout">
-            <TextView
-                android:id="@+id/mMenu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="title"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@+id/linearLayout"
-            android:layout_alignParentStart="true"
-            android:id="@+id/linearLayout2">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="주재료"/>
-            <TextView
-                android:id="@+id/main_ingredients"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@+id/linearLayout2"
-            android:layout_alignParentStart="true">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="조리과정"/>
-            <TextView
-                android:id="@+id/recipe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:layout_below="@+id/main_ingredients"/>
     </RelativeLayout>
 
     <Button
