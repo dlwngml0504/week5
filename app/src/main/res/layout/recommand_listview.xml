@@ -3,13 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#000000"
+        android:id="@+id/MENU_IMAGE"></ImageView>
     <TextView
         android:id="@+id/recommand_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="food name"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/MENU_IMAGE" />
     <Button
         android:id="@+id/selectbtn"
         android:layout_width="wrap_content"

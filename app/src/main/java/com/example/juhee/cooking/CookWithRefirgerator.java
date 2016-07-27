@@ -47,7 +47,6 @@ public class CookWithRefirgerator extends AppCompatActivity {
             try {
                 sendGET SENDGET = new sendGET();
                 String mMenuStr = SENDGET.send(GET_URL,userID);
-                Log.e("COOKKINGKDG",mMenuStr);
                 JSONArray ja =  new JSONObject(mMenuStr).getJSONArray("results");
                 for (int i=0;i<ja.length();i++) {
                     m_Adapter.add(ja.getString(i));

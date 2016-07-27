@@ -4,18 +4,26 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -59,6 +67,7 @@ public class RecommandListAdapter extends BaseAdapter {
 
             final String iteminfo =  m_List.get(position);
 
+            /*음식 이름 추가*/
             final TextView material = (TextView)convertView.findViewById(R.id.recommand_name);
             JSONObject jo = null;
             try {
@@ -68,6 +77,39 @@ public class RecommandListAdapter extends BaseAdapter {
                 e.printStackTrace();
             }
 
+            /* 사진 업로드*/
+            ImageView _image = (ImageView)convertView.findViewById(R.id.MENU_IMAGE);
+            final Bitmap[] bitmap = new Bitmap[1];
+
+            final JSONObject finalJo1 = jo;
+            Thread mThread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        URL url = new URL(finalJo1.getString("img_url"));
+                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
+
+                        InputStream is = conn.getInputStream();
+                        bitmap[0] = BitmapFactory.decodeStream(is);
+
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            mThread.start();
+            try {
+                mThread.join();
+                _image.setImageBitmap(bitmap[0]);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Button playBtn = (Button) convertView.findViewById(R.id.selectbtn);
             final JSONObject finalJo = jo;
             playBtn.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +163,10 @@ public class RecommandListAdapter extends BaseAdapter {
                         }
                         _recipe += "\n"+reciple_List.length + ". " + reciple_List[reciple_List.length - 1].split("\"]")[0];
                         alertbox.setMessage("==========<<재료>>==========\n"+_ingredient+"\n\n==========<<조리법>>==========\n"+_recipe);
+
+
+                        /*사진 upload*/
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();

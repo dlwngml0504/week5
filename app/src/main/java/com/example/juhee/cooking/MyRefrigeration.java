@@ -72,6 +72,7 @@ public class MyRefrigeration extends AppCompatActivity {
                             e.printStackTrace();
                         }}
                 }).start();
+                edit.setText("");
             }
         });
 
