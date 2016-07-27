@@ -36,28 +36,35 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"/>
 
-    <RelativeLayout
-        android:orientation="vertical"
-        android:id="@+id/menuBook"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="310dp">
-        <TextView
-            android:id="@+id/main_ingredients"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:orientation="vertical"
+            android:id="@+id/menuBook"
+            android:layout_width="match_parent"
+            android:layout_height="310dp">
+            <TextView
+                android:id="@+id/main_ingredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/recipe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/main_ingredients"/>
-    </RelativeLayout>
-
+            <TextView
+                android:id="@+id/recipe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/main_ingredients"/>
+        </RelativeLayout>
+    </ScrollView>
     <Button
         android:id="@+id/search_by_youtube"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAlignment="gravity"
+        android:gravity="center"
         android:text="Youtube로 검색하기"/>
 </LinearLayout>

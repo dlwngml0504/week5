@@ -76,13 +76,15 @@ public class PlayAdapter extends BaseAdapter {
             playBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e("PlayAdapter",iteminfo);
-                    Log.e("mVideoId",mVideoId);
-                    Log.e("mVideoTitle",mVideoTitle);
-                    Intent intent = new Intent(m_Context,ExtraYoutubePlay.class);
-                    intent.putExtra("videoId",mVideoId);
-                    intent.putExtra("videoTitle",mVideoTitle);
-                    m_Context.startActivity(intent);
+                    try {
+                        JSONObject item = new JSONObject(iteminfo);
+                        Intent intent = new Intent(m_Context,ExtraYoutubePlay.class);
+                        intent.putExtra("videoId",item.getJSONObject("id").getString("videoId"));
+                        intent.putExtra("videoTitle",mVideoTitle);
+                        m_Context.startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
