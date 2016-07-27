@@ -16,11 +16,13 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String userID = intent.getStringExtra("userid");
+        final String userIngredient = intent.getStringExtra("useringredient");
         Button btn1 = (Button)findViewById(R.id.btn1);
         btn1.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent intent1 = new Intent(MainActivity.this,CookWithRefirgerator.class);
                 intent1.putExtra("userid",userID);
+                intent1.putExtra("useringredient",userIngredient);
                 startActivity(intent1);
             }
         });

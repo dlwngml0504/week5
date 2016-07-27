@@ -27,10 +27,11 @@ public class UserLogin extends AsyncTask<String,Void,String>{
     protected String doInBackground(String... params) {
         Log.e("UserLogin",params[0]);
         userID = params[0];
-        GET_URL += userID;
-        ingredient = "";
+        ingredient = "참외,사과,낫또";
+
         /*try {
-            ingredient = sendGET();
+            sendGET SENDGET = new sendGET();
+            ingredient = SENDGET.send(GET_URL,userID);
         } catch (IOException e) {
             e.printStackTrace();
         }*/
@@ -44,32 +45,7 @@ public class UserLogin extends AsyncTask<String,Void,String>{
         Intent intent = new Intent(mContext, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("userid",userID);
+        intent.putExtra("useringredient",result);
         mContext.startActivity(intent);
-    }
-
-    private static String sendGET() throws IOException {
-        URL obj = new URL(GET_URL);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestMethod("GET");
-        int responseCode = con.getResponseCode();
-        Log.e("UserLogin","GET Response Code :: " + responseCode);
-        if (responseCode == HttpURLConnection.HTTP_OK) { // success
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            // print result
-            Log.e("UserLogin",response.toString());
-            return response.toString();
-        } else {
-            Log.e("UserLogin","GET request not worked");
-        }
-        return "";
     }
 }

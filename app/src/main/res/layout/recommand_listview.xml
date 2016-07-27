@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/recommand_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="food name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"/>
+    <Button
+        android:id="@+id/selectbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="레시피 보기"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

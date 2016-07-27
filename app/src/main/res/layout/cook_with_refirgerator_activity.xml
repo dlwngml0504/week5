@@ -9,4 +9,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.juhee.cooking.CookWithRefirgerator">
 
+    <ListView
+        android:id="@+id/recommendList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="30dp">
+    </ListView>
 </RelativeLayout>
