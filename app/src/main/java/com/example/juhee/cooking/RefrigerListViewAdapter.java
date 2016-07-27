@@ -80,11 +80,11 @@ public class RefrigerListViewAdapter extends BaseAdapter{
                     Log.e("Delete",iteminfo.toString());
                     Log.e("position", String.valueOf(position));
                     Log.e("m_List",m_List.toString());
-                    //m_List.remove(position);
+                    m_List.remove(position);
                     Log.e("m_List",m_List.toString());
                     //RefrigerListViewAdapter.this.m_List.remove(position);
-                    RefrigerListViewAdapter.this.notifyDataSetChanged();
-                    setArrayList(m_List);
+                    MyRefrigeration.m_Adapter.notifyDataSetChanged();
+                    MyRefrigeration.m_ListView.setAdapter(MyRefrigeration.m_Adapter);
 
 
                 }

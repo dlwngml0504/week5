@@ -27,8 +27,8 @@ public class MyRefrigeration extends AppCompatActivity {
     private TextReader mTextReader;
     private List<String> mLines;
     private List<String> Menu_List = new ArrayList<>();
-    private RefrigerListViewAdapter m_Adapter;
-    private ListView m_ListView;
+    static RefrigerListViewAdapter m_Adapter;
+    static ListView m_ListView;
     private String userID;
     private String POST_URL = "http://143.248.47.69:10900/storage";
     private String GET_URL = "http://143.248.47.69:10900/storage?fid=";
@@ -52,6 +52,7 @@ public class MyRefrigeration extends AppCompatActivity {
         m_Adapter = new RefrigerListViewAdapter(MyRefrigeration.this,userID);
         m_ListView = (ListView)findViewById(R.id.refrigeration_list);
         m_ListView.setAdapter(m_Adapter);
+
         final AutoCompleteTextView edit = (AutoCompleteTextView) findViewById(R.id.foodname);
         edit.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, Menu_List));
 
