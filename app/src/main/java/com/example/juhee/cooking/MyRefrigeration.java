@@ -5,7 +5,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -17,6 +19,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class MyRefrigeration extends AppCompatActivity {
 
@@ -70,6 +73,8 @@ public class MyRefrigeration extends AppCompatActivity {
                 }).start();
             }
         });
+
+
     }
 
     @Override
@@ -90,9 +95,11 @@ public class MyRefrigeration extends AppCompatActivity {
                 String user_Ingre = Result_JO.getString("ingredients");
 
                 String[] Ingre_List = user_Ingre.substring(1,user_Ingre.length()-1).split(",");
-                Log.e("Ingre_List.length", String.valueOf(Ingre_List.length));
-                for (int i=0;i<Ingre_List.length;i++ ) {
-                    m_Adapter.add(Ingre_List[i].substring(1,Ingre_List[i].length()-1));
+
+                if (Ingre_List[0].isEmpty()==false){
+                    for (int i=0;i<Ingre_List.length;i++ ) {
+                        m_Adapter.add(Ingre_List[i].substring(1,Ingre_List[i].length()-1));
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();

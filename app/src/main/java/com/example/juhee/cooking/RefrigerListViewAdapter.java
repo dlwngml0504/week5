@@ -38,6 +38,7 @@ public class RefrigerListViewAdapter extends BaseAdapter{
     public void add(String _msg) {
         m_List.add(_msg);
     }
+
     @Override
     public Object getItem(int position) {
         return m_List.get(position);
@@ -63,8 +64,8 @@ public class RefrigerListViewAdapter extends BaseAdapter{
             TextView material = (TextView)convertView.findViewById(R.id.materialname);
             material.setText(iteminfo.toString());
 
-            Button playBtn = (Button) convertView.findViewById(R.id.deletebtn);
-            playBtn.setOnClickListener(new View.OnClickListener() {
+            Button deleteBtn = (Button) convertView.findViewById(R.id.deletebtn);
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -79,14 +80,20 @@ public class RefrigerListViewAdapter extends BaseAdapter{
                     Log.e("Delete",iteminfo.toString());
                     Log.e("position", String.valueOf(position));
                     Log.e("m_List",m_List.toString());
-                    m_List.remove(position);
+                    //m_List.remove(position);
                     Log.e("m_List",m_List.toString());
-                    //notifyDataSetChanged();
+                    //RefrigerListViewAdapter.this.m_List.remove(position);
+                    RefrigerListViewAdapter.this.notifyDataSetChanged();
+                    setArrayList(m_List);
+
+
                 }
             });
         }
         return convertView;
     }
-
+    public void setArrayList(ArrayList<String> arrays){
+        this.m_List = arrays;
+    }
 
 }
