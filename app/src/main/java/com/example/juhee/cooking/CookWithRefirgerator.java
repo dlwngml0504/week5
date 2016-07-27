@@ -3,6 +3,7 @@ package com.example.juhee.cooking;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -13,21 +14,33 @@ import java.io.IOException;
 public class CookWithRefirgerator extends AppCompatActivity {
     private RecommandListAdapter m_Adapter;
     private ListView m_ListView;
-    private String GET_URL = "http://143.248.47.69:10900/good?fid=";
+    private String GET_URL = "http://143.248.47.69:10900/food?fid=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cook_with_refirgerator_activity);
         Intent intent =  getIntent();
-        String userID = intent.getStringExtra("userid");
+        final String userID = intent.getStringExtra("userid");
         String iserIngredient = intent.getStringExtra("useringredient");
 
         m_Adapter = new RecommandListAdapter(CookWithRefirgerator.this);
         m_ListView = (ListView)findViewById(R.id.recommendList);
         m_ListView.setAdapter(m_Adapter);
 
-       /*try {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    sendGET SENDGET = new sendGET();
+                    String mMenuStr = SENDGET.send(GET_URL,userID);
+                    Log.e("COOKKINGKDG",mMenuStr);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+      /* try {
             sendGET SENDGET = new sendGET();
             String mMenuStr = SENDGET.send(GET_URL,userID);
             JSONArray ja = new JSONArray(mMenuStr);

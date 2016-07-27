@@ -49,18 +49,15 @@ public class LoginActivity extends AppCompatActivity {
                         HttpMethod.GET,
                         new GraphRequest.Callback() {
                             public void onCompleted(GraphResponse response) {
-
-                                UserLogin login = new UserLogin(getApplicationContext());
-                                JSONObject user = response.getJSONObject();
+                                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                //Log.e("LoginSuccess", String.valueOf(response.getJSONObject()));
                                 try {
-                                    login.execute(user.getString("id"));
+                                    Log.e("LoginActivity",response.getJSONObject().getString("id"));;
+                                    intent.putExtra("userid",response.getJSONObject().getString("id"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                /*Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                                //Log.e("LoginSuccess", String.valueOf(response.getJSONObject()));
-                                intent.putExtra("userinfo",response.getJSONObject().toString());
-                                startActivity(intent);*/
+                                startActivity(intent);
                             }
                         }
                 ).executeAsync();

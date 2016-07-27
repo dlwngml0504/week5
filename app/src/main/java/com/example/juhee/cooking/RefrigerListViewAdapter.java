@@ -13,6 +13,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -21,10 +22,13 @@ import java.util.ArrayList;
 public class RefrigerListViewAdapter extends BaseAdapter{
     private Context mContext = null;
     private ArrayList<String> m_List;
+    private String USER_ID;
+    private String DELETE_URL = "http://143.248.47.69:10900/storage";
 
-    public RefrigerListViewAdapter(Context mContext) {
+    public RefrigerListViewAdapter(Context mContext,String userid) {
         m_List = new ArrayList<String>();
         this.mContext = mContext;
+        USER_ID = userid;
     }
 
     @Override
@@ -64,6 +68,15 @@ public class RefrigerListViewAdapter extends BaseAdapter{
             playBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
+                    sendDELETE SENDDELETE = new sendDELETE();
+                    try {
+                        SENDDELETE.send(DELETE_URL,USER_ID,iteminfo.toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     m_List.remove(position);
                     notifyDataSetChanged();
                 }

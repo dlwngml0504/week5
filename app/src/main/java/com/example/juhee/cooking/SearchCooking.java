@@ -38,6 +38,7 @@ public class SearchCooking extends AppCompatActivity {
     public static final String mPath = "menu.txt";
     private TextReader mTextReader;
     private List<String> mLines;
+    private String USER_ID;
     private List<String> Menu_List = new ArrayList<>();
     private static String GET_URL = "http://143.248.47.69:10900/food?title=";
 
@@ -49,6 +50,9 @@ public class SearchCooking extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        Intent intent = getIntent();
+        USER_ID = intent.getStringExtra("userid");
 
         mTextReader = new TextReader(this);
         mLines = mTextReader.readLine(mPath);
@@ -85,6 +89,14 @@ public class SearchCooking extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent backintent = new Intent(SearchCooking.this,MainActivity.class);
+        backintent.putExtra("userid",USER_ID);
+        startActivity(backintent);
     }
 
 
@@ -125,6 +137,7 @@ public class SearchCooking extends AppCompatActivity {
             Intent intent = new Intent(SearchCooking.this, YoutubeActivity.class);
             JSONArray ja = (JSONArray) result;
             try {
+                intent.putExtra("uerid",USER_ID);
                 intent.putExtra("videoId", ja.getJSONObject(0).getJSONObject("id").getString("videoId"));
                 intent.putExtra("title", ja.getJSONObject(0).getJSONObject("snippet").getString("title"));
                 intent.putExtra("playInfo", ja.toString());

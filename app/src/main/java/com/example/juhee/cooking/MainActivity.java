@@ -3,6 +3,7 @@ package com.example.juhee.cooking;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,13 +17,14 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String userID = intent.getStringExtra("userid");
-        final String userIngredient = intent.getStringExtra("useringredient");
+        Log.e("MainActivity-userid",userID);
+
         Button btn1 = (Button)findViewById(R.id.btn1);
+
         btn1.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent intent1 = new Intent(MainActivity.this,CookWithRefirgerator.class);
                 intent1.putExtra("userid",userID);
-                intent1.putExtra("useringredient",userIngredient);
                 startActivity(intent1);
             }
         });

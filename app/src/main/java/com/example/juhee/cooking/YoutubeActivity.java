@@ -22,7 +22,8 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
 
     private static final int RECOVERY_REQUEST = 1;
     private YouTubePlayerView youTubeView;
-    String videoid;
+    private String USER_ID;
+    private String videoid;
     private PlayAdapter m_Adapter;
     private ListView m_ListView;
 
@@ -31,11 +32,10 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
         super.onCreate(savedInstanceState);
         setContentView(R.layout.youtube_activity);
         Intent intent = getIntent();
+        USER_ID = intent.getStringExtra("userid");
         videoid = intent.getStringExtra("videoId");
         String title = intent.getStringExtra("title");
         String playList = intent.getStringExtra("playInfo");
-        Log.e("TITLE",title);
-        Log.e("platList",playList);
         m_Adapter = new PlayAdapter(YoutubeActivity.this);
         m_ListView = (ListView)findViewById(R.id.youtubeList);
         m_ListView.setAdapter(m_Adapter);
@@ -47,8 +47,6 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
         youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
     }
@@ -70,4 +68,12 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
             Toast.makeText(this,error,Toast.LENGTH_LONG).show();
         }
     }
+
+  /*  @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent backintent = new Intent(YoutubeActivity.this,SearchCooking.class);
+        backintent.putExtra("userid",USER_ID);
+        startActivity(backintent);
+    }*/
 }
