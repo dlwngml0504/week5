@@ -8,4 +8,6 @@
     <string name="seek_to_hint">Seconds</string>
     <string name="search">Search</string>
     <string name="failed">Failed to initialize Youtube Player</string>
+    <string name="ingredient">================재료=================</string>
+    <string name="recipe">================조리법================</string>
 </resources>

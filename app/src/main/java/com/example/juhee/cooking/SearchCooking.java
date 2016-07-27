@@ -283,7 +283,7 @@ public class SearchCooking extends AppCompatActivity {
 
                 }
 
-                main.setText("\n  <<재료>>\n"+_ingredient);
+                main.setText("\n  =================<<재료>>==================\n"+_ingredient);
 
                 /* 레시피 parsing */
                 String[] reciple_List = jo.getString("recipe").split("\",\"");
@@ -292,7 +292,7 @@ public class SearchCooking extends AppCompatActivity {
                     _recipe += "\n"+i + ". " + reciple_List[i - 1] + "\n";
                 }
                 _recipe +="\n"+ reciple_List.length + ". " + reciple_List[reciple_List.length - 1].split("\"]")[0];
-                recipe.setText("\n  <<조리법>>\n"+_recipe);
+                recipe.setText("\n  ================<<조리법>>=================\n"+_recipe);
 
             } catch (JSONException e) {
                 e.printStackTrace();

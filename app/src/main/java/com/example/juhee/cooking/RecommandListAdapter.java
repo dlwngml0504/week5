@@ -2,6 +2,7 @@ package com.example.juhee.cooking;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -62,7 +63,7 @@ public class RecommandListAdapter extends BaseAdapter {
 
 
         if ( convertView == null ) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.recommand_listview, parent, false);
 
             final String iteminfo =  m_List.get(position);
@@ -112,73 +113,111 @@ public class RecommandListAdapter extends BaseAdapter {
             }
             Button playBtn = (Button) convertView.findViewById(R.id.selectbtn);
             final JSONObject finalJo = jo;
+            final View finalConvertView = convertView;
+            final View finalConvertView1 = convertView;
+            final JSONObject finalJo2 = jo;
             playBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder alertbox = new AlertDialog.Builder(v.getRootView().getContext());
-                    //alertbox.setMessage(finalJo.toString());
-                    alertbox.setTitle(material.getText());
+
+                    View view = inflater.inflate(R.layout.recipe_dialog,null);
 
 
+                    TextView _INGREDIENT = (TextView) view.findViewById(R.id.main_ingredients2);
+                    TextView _RECIPE = (TextView)view.findViewById(R.id.recipe2);
+                    ImageView _image = (ImageView)view.findViewById(R.id.foodImage2);
+                    final Bitmap[] bitmap = new Bitmap[1];
                     try {
+                         /* 사진 업로드*/
+                        Thread mThread = new Thread() {
+                            @Override
+                            public void run() {
+                                try {
+                                    URL url = new URL(finalJo2.getString("img_url"));
 
-                         /* 재료 파싱 */
+                                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                                    conn.setDoInput(true);
+                                    conn.connect();
+
+                                    InputStream is = conn.getInputStream();
+                                    bitmap[0] = BitmapFactory.decodeStream(is);
+
+                                } catch (MalformedURLException e) {
+                                    e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+                        mThread.start();
+                        try {
+                            mThread.join();
+                            _image.setImageBitmap(bitmap[0]);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        /*재료파싱*/
                         String[] mainIng_List = finalJo.getString("main_ingredients").split("],");
                         String[] subIng_List = finalJo.getString("sub_ingredients").split("],");
                         String _ingredient = "";
                         Log.e("mainIng_List.length", String.valueOf(mainIng_List.length));
-                        if (mainIng_List.length!=1) {
+                        if (mainIng_List.length != 1) {
                             String[] lst1 = mainIng_List[0].split("\",\"");
-                            _ingredient += lst1[0].substring(3) + "[" +lst1[1].substring(0,lst1[1].length()-1)+"]";
-                            for (int i=1;i<mainIng_List.length-1;i++) {
+                            _ingredient += lst1[0].substring(3) + "[" + lst1[1].substring(0, lst1[1].length() - 1) + "]";
+                            for (int i = 1; i < mainIng_List.length - 1; i++) {
                                 String str = mainIng_List[i];
                                 String[] lst = str.split("\",\"");
-                                _ingredient += ", "+lst[0].substring(2) + "[" +lst[1].substring(0,lst[1].length()-1)+"]";
+                                _ingredient += ", " + lst[0].substring(2) + "[" + lst[1].substring(0, lst[1].length() - 1) + "]";
                             }
-                            String[] lst2 = mainIng_List[mainIng_List.length-1].split("\",\"");
-                            _ingredient += ", "+lst2[0].substring(3) + "[" +lst2[1].substring(0,lst2[1].length()-3)+"]";
+                            String[] lst2 = mainIng_List[mainIng_List.length - 1].split("\",\"");
+                            _ingredient += ", " + lst2[0].substring(3) + "[" + lst2[1].substring(0, lst2[1].length() - 3) + "]";
 
                         }
-                        if (subIng_List.length!=1) {
+                        if (subIng_List.length != 1) {
                             String[] lst3 = subIng_List[0].split("\",\"");
-                            if (mainIng_List.length!=1){
+                            if (mainIng_List.length != 1) {
                                 _ingredient += ", ";
                             }
-                            _ingredient += lst3[0].substring(3) + "[" +lst3[1].substring(0,lst3[1].length()-1)+"]";
-                            for (int i=1;i<subIng_List.length-1;i++) {
+                            _ingredient += lst3[0].substring(3) + "[" + lst3[1].substring(0, lst3[1].length() - 1) + "]";
+                            for (int i = 1; i < subIng_List.length - 1; i++) {
                                 String str = subIng_List[i];
                                 String[] lst = str.split("\",\"");
-                                _ingredient += ", "+lst[0].substring(2) + "[" +lst[1].substring(0,lst[1].length()-1)+"]";
+                                _ingredient += ", " + lst[0].substring(2) + "[" + lst[1].substring(0, lst[1].length() - 1) + "]";
                             }
-                            String[] lst4 = subIng_List[subIng_List.length-1].split("\",\"");
-                            _ingredient += ", "+lst4[0].substring(2) + "[" +lst4[1].substring(0,lst4[1].length()-3)+"]";
+                            String[] lst4 = subIng_List[subIng_List.length - 1].split("\",\"");
+                            _ingredient += ", " + lst4[0].substring(2) + "[" + lst4[1].substring(0, lst4[1].length() - 3) + "]";
 
+                            /* 레시피 parsing */
+                            String[] reciple_List = finalJo.getString("recipe").split("\",\"");
+                            String _recipe = "1. " + reciple_List[0].substring(2) + "\n";
+                            for (int i = 2; i < reciple_List.length; i++) {
+                                _recipe += "\n"+i + ". " + reciple_List[i - 1] + "\n";
+                            }
+                            _recipe += "\n"+reciple_List.length + ". " + reciple_List[reciple_List.length - 1].split("\"]")[0];
+
+                            /* set Dialog */
+                            _INGREDIENT.setText(_ingredient);
+                            _RECIPE.setText(_recipe);
                         }
-
-                        /* 레시피 parsing */
-                        String[] reciple_List = finalJo.getString("recipe").split("\",\"");
-                        String _recipe = "1. " + reciple_List[0].substring(2) + "\n";
-                        for (int i = 2; i < reciple_List.length; i++) {
-                            _recipe += "\n"+i + ". " + reciple_List[i - 1] + "\n";
-                        }
-                        _recipe += "\n"+reciple_List.length + ". " + reciple_List[reciple_List.length - 1].split("\"]")[0];
-                        alertbox.setMessage("==========<<재료>>==========\n"+_ingredient+"\n\n==========<<조리법>>==========\n"+_recipe);
-
-
-                        /*사진 upload*/
-
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    alertbox.setPositiveButton("OK",
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setView(view);
+                    builder.setTitle(material.getText());
+                    builder.setPositiveButton("OK",
                             new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface arg0,int arg1) {
 
                                 }
                             });
-                    alertbox.show();
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
 
             });
